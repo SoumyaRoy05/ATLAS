@@ -1,0 +1,30 @@
+[project]
+name = "atlas-voice-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Soumyabrata Roy", email = "soumya11roy@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",
+    "faster-whisper>=1.2.1",
+    "google-genai>=2.22.0",
+    "numpy>=2.5.2",
+    "nvidia-cublas-cu12>=12.9.2.10",
+    "nvidia-cudnn-cu12>=9.25.1.1",
+    "ollama>=0.6.2",
+    "openai>=3.7.0",
+    "openwakeword>=0.4.0",
+    "python-dotenv>=1.2.3",
+    "reportlab>=5.0.1",
+    "sounddevice>=0.5.6",
+]
+
+[project.scripts]
+atlas-voice-assistant = "atlas_voice_assistant:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
