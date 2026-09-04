@@ -96,8 +96,8 @@ class Ears:
         custom_model_dir = Path(r"D:\Codes\AI_MODELS\OpenWakeWord")
         loaded_model_paths = [] # List to hold paths of loaded wake-word models
 
-        # Check for custom models (atlas, buddy, pal) or load bundled models
-        for name in ["atlas", "buddy", "pal"]:
+        # Check for custom models or load the bundled fallback
+        for name in ["atlas", "hey_atlas", "buddy", "pal"]:
             custom_path = custom_model_dir / f"{name}.onnx"
             if custom_path.exists():
                 loaded_model_paths.append(str(custom_path))
@@ -174,7 +174,7 @@ class Ears:
         )
 
         with self.stream:
-            print("\n[IDLE] Monitoring for wake triggers ('Atlas', 'Buddy', 'Pal')...")
+            print("\n[IDLE] Monitoring for wake triggers ('Atlas', 'Hey Atlas', 'Buddy', 'Pal')...")
 
             while self.is_running:
                 frame = self.audio_queue.get().flatten()
