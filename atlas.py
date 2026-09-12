@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -22,10 +23,11 @@ load_dotenv(dotenv_path=root_dir / ".env")
 if not os.getenv("HF_HOME"):
     os.environ["HF_HOME"] = r"D:\Codes\AI_MODELS\huggingface"
 
+
 # -----------------------------------------------------------------------------
 # 2. Sensory Organ Import
 # -----------------------------------------------------------------------------
-from Organs.ears import Ears  # Auditory sensory organ: wake word detection + speech-to-text
+from Organs.ears import hear  # Auditory sensory organ: wake word detection + speech-to-text
 
 
 # -----------------------------------------------------------------------------
@@ -46,11 +48,12 @@ def main() -> None:
 
     try:
         # Instantiates Ears, which internally connects to Brain and Mouth
-        ears = Ears()
+        ears = hear()
         print("[CNS] Ignition sequence complete. Acoustic sensory organ active.")
         # Starts the uninterrupted listening loop:
         # Ears (OWW + Whisper) -> Brain (LangGraph + LLM) -> Mouth (Kokoro/TTS)
-        ears.start()
+        while True:
+            time.sleep(1)  # Keep the supervisor alive without constantly consuming CPU
 
     except KeyboardInterrupt:
         print("\n[CNS] Manual keyboard interrupt received. Commencing safe teardown...")
@@ -67,6 +70,7 @@ def main() -> None:
         if callable(stop):
             stop()
         print("[CNS] Audio hardware unhooked. GPU contexts released. System offline.")
+
 
 
 if __name__ == "__main__":

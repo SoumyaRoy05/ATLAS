@@ -1,4 +1,6 @@
 import re
+import sys
+from pathlib import Path
 from typing import Any, List, TypedDict
 from dotenv import load_dotenv
 
@@ -10,6 +12,11 @@ from langgraph.graph import StateGraph, START, END
 # 1. Environment & Path Resolution (Root access for llm.py & Behaviour)
 # -----------------------------------------------------------------------------
 load_dotenv()
+
+# Make root-level modules importable when this file is run directly.
+project_root = Path(__file__).resolve().parents[1]
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 # Model provider from project root
 from llm import get_llm
@@ -48,6 +55,7 @@ class Brain:
         clean = re.sub(r"[\*\_#\>\-`]", "", text)
         return " ".join(clean.split()).strip()
 
+
     # =========================================================================
     # GRAPH 1 NODES: INPUT QUERY PREPARATION & LLM SELECTION
     # =========================================================================
@@ -72,6 +80,7 @@ class Brain:
         """Resolves and selects the active LLM waterfall instance for processing."""
         active_llm = get_llm()
         return {"selected_llm": active_llm}
+
 
     # =========================================================================
     # GRAPH 2 NODES: COGNITIVE PROCESSING VIA LLM INVOCATION
@@ -105,6 +114,7 @@ class Brain:
             print(f"[Brain Graph 2 - LLM Execution Error]: {e}")
             return {"raw_response": ""}
 
+
     # =========================================================================
     # GRAPH 3 NODES: SANITIZATION & DIRECT VOCAL MOTOR OUTPUT
     # =========================================================================
@@ -131,8 +141,9 @@ class Brain:
             self.mouth.speak(reply)
         return {}
 
+
     # =========================================================================
-    # SUBGRAPH BUILDERS & MASTER ORCHESTRATOR
+    # SUBGRAPH BUILDERS
     # =========================================================================
 
     # builds the first subgraph that prepares the user input and selects the appropriate LLM for processing
@@ -178,6 +189,11 @@ class Brain:
 
         return workflow.compile()
 
+
+    # =========================================================================
+    # MASTER GRAPH BUILDER
+    # =========================================================================
+
     # builds the master graph that orchestrates the sequential flow of all three subgraphs: 
     # input preparation, LLM processing, and vocal output
     # returns a compiled StateGraph that can be invoked with the BrainState
@@ -210,6 +226,10 @@ class Brain:
     # takes the user prompt as input and returns the final vocalized response text
     def think(self, user_prompt: str) -> str:
         """Invoked by ears.take_input() to run the complete master cognitive graph."""
+
+        print(f"[Brain]: Received user prompt: {user_prompt}", flush=True)
+        print("[Brain]: Thinking...", flush=True)
+
         if not user_prompt or not user_prompt.strip():
             return ""
 
@@ -222,6 +242,14 @@ class Brain:
             "final_response": "",
         }
 
+        # Run the master graph with the initial state and a specific run configuration
         run_config: RunnableConfig = {"run_name": "Atlas-Master-Cognitive-Turn"}
         result = self.graph.invoke(initial_state, config=run_config)
         return result.get("final_response", "")
+
+
+if __name__ == "__main__":
+    # Example usage
+    brain = Brain()
+    user_input = "Give me a brief summary of the latest advancements in AI research."
+    brain.think(user_input)

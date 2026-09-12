@@ -44,7 +44,7 @@ t1a = ChatGoogleGenerativeAI(
     temperature=0.7,
     max_tokens=128,
     timeout=10,
-    max_retries=0,
+    max_retries=2,
     thinking_level="low",
     google_api_key=SecretStr(gemini_key) if gemini_key else None,
 )
@@ -53,7 +53,7 @@ t1b = ChatGoogleGenerativeAI(
     temperature=0.7,
     max_tokens=128,
     timeout=10,
-    max_retries=0,
+    max_retries=2,
     thinking_level="low",
     google_api_key=SecretStr(gemini_key) if gemini_key else None,
 )
@@ -64,7 +64,7 @@ t2a = ChatGroq(
     temperature=0.7,
     max_tokens=128,
     timeout=10,
-    max_retries=0,
+    max_retries=2,
     api_key=SecretStr(groq_key) if groq_key else None,
 )
 t2b = ChatGroq(
@@ -72,7 +72,7 @@ t2b = ChatGroq(
     temperature=0.7,
     max_tokens=128,
     timeout=10,
-    max_retries=0,
+    max_retries=2,
     api_key=SecretStr(groq_key) if groq_key else None,
 )
 
