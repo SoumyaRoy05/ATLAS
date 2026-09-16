@@ -170,8 +170,9 @@ The mouth organ always prints the generated response before attempting speech sy
 
 ## Future imporvements
 
-- Continuous listening and multi-prompt handling
 - Add a GUI for configuration and status display
 - Further tools for the second graph for LLM processing or thinking
 - Implementation of RAG (retrieval-augmented generation) for knowledge retrieval and context-aware responses
+- Further Behavioural files will be added to update the tonality and the respose format of the assistant
+- Continuous listening and multi-prompt handling
 - Add a local knowledge base for offline operation
