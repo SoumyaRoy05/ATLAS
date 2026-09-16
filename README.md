@@ -25,16 +25,11 @@ flowchart TD
 ### Brain graphs
 
 The brain is composed of three subgraphs:
-
-1. **Input preparation graph**: builds the persona system prompt and the user message, then selects the active LLM.  
-![Curating the user prompt graph](workflow_images/prepare_input.png)  
-2. **Processing graph**: invokes the selected LLM and extracts its text response.  
-![Main Thinking graph](workflow_images/thinking.png)  
-3. **Speech graph**: sanitizes the response for speech and passes it to the mouth organ.  
-![Sending to mouth graph](workflow_images/send_to_mouth.png)  
+1. **Input preparation graph**: builds the persona system prompt and the user message, then selects the active LLM.
+2. **Processing graph**: invokes the selected LLM and extracts its text response.
+3. **Speech graph**: sanitizes the response for speech and passes it to the mouth organ.
   
-The **Master graph** executes those three subgraphs sequentially.  
-![Master graph](workflow_images/master_graph.png)  
+The **Master graph** executes those three subgraphs sequentially.
 
 ## Project structure
 
@@ -128,10 +123,14 @@ The current `ears.py` implementation records and transcribes one prompt cycle. I
 
 Open `workflow.ipynb` in VS Code with the Jupyter extension and run its Python cell. It renders four embedded PNG diagrams:
 
-1. Input preparation and LLM selection
-2. LLM processing
-3. Sanitization and mouth output
-4. Complete master graph
+1. Input preparation and LLM selection  
+![Curating the user prompt graph](workflow_images/prepare_input.png)  
+2. LLM processing  
+![Main Thinking graph](workflow_images/thinking.png)  
+3. Sanitization and mouth output  
+![Sending to mouth graph](workflow_images/send_to_mouth.png)  
+4. Complete master graph  
+![Master graph](workflow_images/master_graph.png)  
 
 The notebook uses LangGraph's PNG renderer directly. Run the cell in VS Code's notebook editor or Interactive Window to see the rendered diagrams.
 
