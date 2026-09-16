@@ -10,6 +10,7 @@ requires-python = ">=3.13"
 dependencies = [
     "faster-whisper>=1.2.1",
     "google-genai>=2.22.0",
+    "ipython>=9.0.0",
     "kokoro>=0.9.4",
     "langchain>=1.4.0",
     "langchain-core>=1.6.2",

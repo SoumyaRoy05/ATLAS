@@ -1,0 +1,37 @@
+MOUTH ORGAN
+===========
+
+Purpose
+-------
+The mouth organ converts the brain's final text response into spoken audio. It always prints the response to the console and then attempts to synthesize and play the same response using Kokoro text-to-speech.
+
+How it works
+------------
+1. Environment variables are loaded at startup.
+2. Logging and warning filters reduce noisy Hugging Face Hub and other library messages. These filters do not change the speech pipeline itself.
+3. SoundDevice is imported for audio playback and NumPy is used to combine generated audio arrays.
+4. The Mouth class exposes one public method: speak(text).
+5. speak() prints the text with the [Mouth] label and flushes the output so it appears immediately.
+6. It temporarily redirects standard output and standard error while Kokoro is loaded and used. This keeps model-loading messages out of the normal assistant conversation.
+7. Kokoro's KPipeline is created with the British English language code, the Kokoro-82M repository, and the CUDA device.
+8. The pipeline generates audio using the bm_george voice at normal speed.
+9. Each generated audio item is checked. Empty values and string markers are skipped. Tensor-like values are moved from the GPU to the CPU, converted to NumPy arrays, and collected.
+10. When audio chunks exist, they are concatenated and played through SoundDevice at a 24,000 Hz sample rate. The method waits until playback finishes.
+
+Important class and method
+--------------------------
+Mouth: Represents Atlas's vocal output organ.
+
+speak(text): Prints, synthesizes, combines, plays, and waits for the supplied response. The brain calls this method after sanitizing the language-model output.
+
+Dependencies and requirements
+-----------------------------
+The module uses python-dotenv, SoundDevice, NumPy, Kokoro, and the required PyTorch/CUDA runtime for GPU speech synthesis. The computer also needs an audio output device.
+
+Current behavior
+---------------
+The class documentation describes a graceful fallback, but the current speak() implementation only guarantees console output before importing Kokoro. If Kokoro is missing or fails during setup, the exception is not caught inside speak(), so the caller may receive an error after the console response has been printed.
+
+Legacy alternative
+------------------
+The file contains commented-out pyttsx3 instructions. They show an earlier possible speech engine, including voice, speed, and volume settings, but they are inactive. The active implementation uses Kokoro instead.

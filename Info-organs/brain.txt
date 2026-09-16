@@ -1,0 +1,57 @@
+BRAIN ORGAN
+===========
+
+Purpose
+-------
+The brain organ is the central reasoning pipeline of Atlas. It receives text from the ears organ, applies the assistant persona, selects an available language model, generates a response, cleans that response for speech, and sends it to the mouth organ.
+
+State handled by the brain
+--------------------------
+BrainState is the shared state passed through the LangGraph workflow. It can contain:
+- user_prompt: the text received from the user
+- system_prompt: the persona instructions supplied to the language model
+- messages: the system and human messages sent to the model
+- selected_llm: the active language model instance
+- raw_response: the unprocessed model response
+- final_response: the cleaned response prepared for speech
+
+How it works
+------------
+1. Environment variables are loaded from the project configuration.
+2. The project root is added to the Python import path when the file is run directly. This allows the brain to import the root-level language-model provider and the Behaviour package.
+3. A Mouth instance is created unless one is supplied to the Brain constructor. The graph used to process requests is compiled during initialization.
+4. The master graph runs three smaller graphs in sequence.
+
+Graph 1: Input preparation
+--------------------------
+prepare_input_node() obtains the assistant persona instructions from Behaviour.persona.get_system_prompt(). It combines those instructions with the user's prompt as a system message and a human message.
+
+select_llm_node() calls llm.get_llm() and stores the active language model in the state. This keeps model selection separate from the rest of the reasoning flow.
+
+Graph 2: Cognitive processing
+-----------------------------
+processing() invokes the selected language model with the prepared messages. It supports responses whose content is plain text, a list of text blocks, or another value that can be converted to text.
+
+The resulting text is stripped and stored as raw_response. If model invocation fails, the error is printed and the state receives an empty response so the fallback path can be used.
+
+Graph 3: Output preparation
+---------------------------
+sanitize_output_node() checks whether the model produced a response. If not, it obtains an offline receipt from Behaviour.persona.get_offline_receipt(). Otherwise, it removes common formatting symbols such as Markdown markers and normalizes whitespace so the response is suitable for text-to-speech.
+
+mouth_speak_node() sends the final response to Mouth.speak(). It does not speak an empty response and returns no additional state values.
+
+Main entry point
+----------------
+think(user_prompt) starts the complete master graph. It logs the prompt, ignores empty input, initializes BrainState, invokes the graph with a named run configuration, and returns final_response.
+
+Processing flow
+---------------
+Ears text -> persona and message preparation -> language-model selection -> model invocation -> response sanitization -> Mouth speech
+
+Dependencies and requirements
+-----------------------------
+The brain uses python-dotenv, LangChain message types, LangGraph StateGraph, the project's llm.py provider, Behaviour.persona, and Organs.mouth. A configured language model is required for online responses. The offline receipt provides a fallback when model output is unavailable.
+
+Design note
+-----------
+The Brain constructor accepts an optional Mouth instance. This allows the speech output component to be replaced or tested without changing the reasoning graph.
