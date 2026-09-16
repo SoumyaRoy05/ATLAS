@@ -26,15 +26,15 @@ flowchart TD
 
 The brain is composed of three subgraphs:
 
-1. **Input preparation graph**: builds the persona system prompt and the user message, then selects the active LLM.
-![Curating the user prompt graph](workflow_images/prepare_input.png)
-2. **Processing graph**: invokes the selected LLM and extracts its text response.
-![Main Thinking graph](workflow_images/thinking.png)
-3. **Speech graph**: sanitizes the response for speech and passes it to the mouth organ.
-![Sending to mouth graph](workflow_images/send_to_mouth.png)
-
-The **Master graph** executes those three subgraphs sequentially.
-![Master graph](workflow_images/master_graph.png)
+1. **Input preparation graph**: builds the persona system prompt and the user message, then selects the active LLM.  
+![Curating the user prompt graph](workflow_images/prepare_input.png)  
+2. **Processing graph**: invokes the selected LLM and extracts its text response.  
+![Main Thinking graph](workflow_images/thinking.png)  
+3. **Speech graph**: sanitizes the response for speech and passes it to the mouth organ.  
+![Sending to mouth graph](workflow_images/send_to_mouth.png)  
+  
+The **Master graph** executes those three subgraphs sequentially.  
+![Master graph](workflow_images/master_graph.png)  
 
 ## Project structure
 
