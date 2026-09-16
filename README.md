@@ -27,14 +27,14 @@ flowchart TD
 The brain is composed of three subgraphs:
 
 1. **Input preparation graph**: builds the persona system prompt and the user message, then selects the active LLM.
-D:\Codes\ATLAS-Voice_Assistant\workflow_images\prepare_input.png
+![Curating the user prompt graph](workflow_images/prepare_input.png)
 2. **Processing graph**: invokes the selected LLM and extracts its text response.
-D:\Codes\ATLAS-Voice_Assistant\workflow_images\process_llm.png
+![Main Thinking graph](workflow_images/thinking.png)
 3. **Speech graph**: sanitizes the response for speech and passes it to the mouth organ.
-D:\Codes\ATLAS-Voice_Assistant\workflow_images\output_speech.png
+![Sending to mouth graph](workflow_images/send_to_mouth.png)
 
 The **Master graph** executes those three subgraphs sequentially.
-D:\Codes\ATLAS-Voice_Assistant\workflow_images\master_graph.png
+![Master graph](workflow_images/master_graph.png)
 
 ## Project structure
 
@@ -167,3 +167,11 @@ The mouth organ always prints the generated response before attempting speech sy
 - The persona is generated dynamically, including a title and demeanor selected for each request.
 - Brain responses are sanitized before text-to-speech so Markdown formatting is not spoken aloud.
 - Do not commit `.env` or API keys to source control.
+
+## Future imporvements
+
+- Continuous listening and multi-prompt handling
+- Add a GUI for configuration and status display
+- Further tools for the second graph for LLM processing or thinking
+- Implementation of RAG (retrieval-augmented generation) for knowledge retrieval and context-aware responses
+- Add a local knowledge base for offline operation
